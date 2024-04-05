@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
+import 'login_screen.dart';
+
+
+class SignupScreen extends StatefulWidget {
+  @override
+  _SignupScreenState createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  final AuthService _authService = AuthService(); // Instanciez votre service d'authentification
+
+  // Définissez les contrôleurs pour les champs d'entrée
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Sign Up'),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                ),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  // Logique pour s'inscrire
+                  String email = _emailController.text.trim();
+                  String password = _passwordController.text.trim();
+
+                  // Appel à la méthode d'inscription dans le service d'authentification
+                  dynamic result = await _authService.signUp(email, password);
+
+                  // Vérifiez le résultat et gérez-le en conséquence
+                  if (result != null) {
+                    // L'utilisateur est inscrit avec succès
+                    // Vous pouvez rediriger l'utilisateur vers une autre page, par exemple la page d'accueil
+                    Navigator.pushReplacementNamed(context, '/home');
+                  } else {
+                    // Une erreur s'est produite lors de l'inscription
+                    // Vous pouvez afficher un message d'erreur à l'utilisateur
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Erreur lors de l\'inscription')),
+                    );
+                  }
+                },
+                child: Text('Sign Up'),
+              ),
+              SizedBox(height: 20),
+              // Ajoutez un lien vers l'écran de connexion
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                },
+                child: Text(
+                  'Déjà inscrit ? Connectez-vous ici',
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    // Disposez des contrôleurs pour éviter les fuites de mémoire
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+}

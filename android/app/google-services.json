@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "736853854569",
+    "project_id": "coin-control-44df7",
+    "storage_bucket": "coin-control-44df7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736853854569:android:d0b804626c6ff0632455f8",
+        "android_client_info": {
+          "package_name": "com.example.coin_control"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDugkx15hjziYDTEbZ6FKK4vhYz1OGBsy8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
