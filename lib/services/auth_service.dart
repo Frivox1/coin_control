@@ -8,14 +8,18 @@ class AuthService {
     return _auth.authStateChanges();
   }
 
-  // Méthode pour s'inscrire avec email et mot de passe
-  Future<User?> signUp(String email, String password) async {
+  // Méthode pour s'inscrire avec email, mot de passe et nom d'utilisateur
+  Future<User?> signUp(String email, String password, String username) async {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // Mise à jour du nom d'utilisateur dans le profil de l'utilisateur
+      await userCredential.user!.updateDisplayName(username);
+
       return userCredential.user;
     } catch (e) {
       print('Erreur lors de l\'inscription : $e');

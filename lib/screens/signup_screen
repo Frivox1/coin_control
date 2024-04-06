@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'login_screen.dart';
 
-
 class SignupScreen extends StatefulWidget {
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final AuthService _authService = AuthService(); // Instanciez votre service d'authentification
+  final AuthService _authService = AuthService(); // Instantiate your authentication service
 
-  // Définissez les contrôleurs pour les champs d'entrée
+  // Define controllers for input fields
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController(); // Add controller for username field
 
   @override
   Widget build(BuildContext context) {
@@ -42,32 +42,40 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               SizedBox(height: 20),
+              TextField(
+                controller: _usernameController, // Connect the controller to the username field
+                decoration: InputDecoration(
+                  labelText: 'Username', // Label for the username field
+                ),
+              ),
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  // Logique pour s'inscrire
+                  // Logic for signing up
                   String email = _emailController.text.trim();
                   String password = _passwordController.text.trim();
+                  String username = _usernameController.text.trim(); // Get the username value
 
-                  // Appel à la méthode d'inscription dans le service d'authentification
-                  dynamic result = await _authService.signUp(email, password);
+                  // Call the signUp method from the authentication service with email, password, and username
+                  dynamic result = await _authService.signUp(email, password, username);
 
-                  // Vérifiez le résultat et gérez-le en conséquence
+                  // Check the result and handle it accordingly
                   if (result != null) {
-                    // L'utilisateur est inscrit avec succès
-                    // Vous pouvez rediriger l'utilisateur vers une autre page, par exemple la page d'accueil
+                    // User signed up successfully
+                    // You can redirect the user to another page, for example, the home page
                     Navigator.pushReplacementNamed(context, '/home');
                   } else {
-                    // Une erreur s'est produite lors de l'inscription
-                    // Vous pouvez afficher un message d'erreur à l'utilisateur
+                    // An error occurred during sign up
+                    // You can display an error message to the user
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Erreur lors de l\'inscription')),
+                      SnackBar(content: Text('Error during sign up')),
                     );
                   }
                 },
                 child: Text('Sign Up'),
               ),
               SizedBox(height: 20),
-              // Ajoutez un lien vers l'écran de connexion
+              // Add a link to the login screen
               TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -76,7 +84,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   );
                 },
                 child: Text(
-                  'Déjà inscrit ? Connectez-vous ici',
+                  'Already registered? Sign in here',
                   style: TextStyle(color: Colors.blue),
                 ),
               ),
@@ -89,9 +97,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
-    // Disposez des contrôleurs pour éviter les fuites de mémoire
+    // Dispose of controllers to avoid memory leaks
     _emailController.dispose();
     _passwordController.dispose();
+    _usernameController.dispose(); // Dispose of the username controller
     super.dispose();
   }
 }
