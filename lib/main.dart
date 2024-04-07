@@ -27,7 +27,7 @@ class CoinControl extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light, // Thème clair
         hintColor: Colors.black, // Couleur d'accentuation
-        scaffoldBackgroundColor: Colors.white, // Fond de l'écran
+        scaffoldBackgroundColor: Colors.white, // Fond de l'écran (blanc)
         textTheme: const TextTheme(
           bodyLarge:
               TextStyle(color: Colors.black), // Couleur du texte principal

@@ -49,4 +49,9 @@ class AuthService {
       print('Erreur lors de la déconnexion : $e');
     }
   }
+
+  String? getCurrentUserId() {
+    final User? user = _auth.currentUser;
+    return user?.uid;
+  }
 }

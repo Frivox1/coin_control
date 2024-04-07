@@ -1,13 +1,17 @@
+import 'package:coin_control/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'add_account_screen.dart';
+import 'package:coin_control/services/auth_service.dart';
+import 'package:coin_control/widgets/balance_evolution_chart.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthService authService = AuthService();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -28,71 +32,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.black,
-              ),
-              child: Center(
-                child: Text(
-                  'Coin Control Menu',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.add, size: 24),
-              title: const Text(
-                'Add an account',
-                style: TextStyle(fontSize: 24),
-              ),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const AddAccountScreen();
-                }));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.list, size: 24),
-              title: const Text(
-                'List of accounts',
-                style: TextStyle(fontSize: 24),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings, size: 24),
-              title: const Text(
-                'Settings',
-                style: TextStyle(fontSize: 24),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout, size: 24),
-              title: const Text(
-                'Sign out',
-                style: TextStyle(fontSize: 24),
-              ),
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pushReplacementNamed(
-                    context, '/login'); // Redirection vers l'écran de connexion
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(35.0),
         child: Column(
@@ -131,8 +71,11 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance.collection('accounts').snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('accounts')
+                  .where('user_id',
+                      isEqualTo: authService.getCurrentUserId() as String)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
@@ -155,6 +98,15 @@ class HomeScreen extends StatelessWidget {
                 }
               },
             ),
+            const SizedBox(
+                height: 20), // Ajoutez un espacement avant le graphique
+            const Text(
+              'Balance Evolution:',
+              style: TextStyle(fontSize: 22),
+            ),
+            const SizedBox(height: 10),
+            // Ajoutez l'appel du widget BalanceEvolutionChart ici
+            BalanceEvolutionChart(),
           ],
         ),
       ),
