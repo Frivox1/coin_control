@@ -1,4 +1,6 @@
+import 'package:coin_control/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddAccountScreen extends StatefulWidget {
   const AddAccountScreen({super.key});
@@ -20,6 +22,9 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
     'Investment'
   ]; // Account types
 
+  final FirebaseFirestore _firestore =
+      FirebaseFirestore.instance; // Instance de Firestore
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +44,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                   border: OutlineInputBorder(),
                 ),
                 style: const TextStyle(
-                    color: Colors.white), // Couleur du texte de saisie
+                    color: Colors.black), // Couleur du texte de saisie
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the account name';
@@ -59,7 +64,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                   border: OutlineInputBorder(),
                 ),
                 style: const TextStyle(
-                    color: Colors.white), // Couleur du texte de saisie
+                    color: Colors.black), // Couleur du texte de saisie
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -133,10 +138,27 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
   }
 
   void _createAccount() {
-    // Implement your logic to handle the creation of the account with the entered data
-    print('Account Name: $_accountName');
-    print('Account Type: $_selectedAccountType');
-    print('Account Balance: $_accountBalance');
-    // You can call Firebase or any other backend service here to save the account details
+    // Enregistrer les données du compte dans Firestore
+    _firestore.collection("accounts").add({
+      'account_name': _accountName,
+      'account_type': _selectedAccountType,
+      'account_balance': _accountBalance,
+    }).then((_) {
+      print('Account created successfully!');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Account added successfully!'),
+          duration: Duration(seconds: 2), // Durée du SnackBar
+          backgroundColor: Colors.green, // Change the color to green
+        ),
+      );
+      Future.delayed(Duration(seconds: 2), () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return HomeScreen();
+        }));
+      });
+    }).catchError((error) {
+      print('Error creating account: $error');
+    });
   }
 }

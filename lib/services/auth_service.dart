@@ -43,6 +43,10 @@ class AuthService {
 
   // Méthode pour se déconnecter
   Future<void> signOut() async {
-    await _auth.signOut();
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      print('Erreur lors de la déconnexion : $e');
+    }
   }
 }
