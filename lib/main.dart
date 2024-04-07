@@ -15,7 +15,7 @@ void main() async {
 }
 
 class CoinControl extends StatelessWidget {
-  CoinControl({super.key});
+  CoinControl({Key? key});
 
   final AuthService _authService = AuthService();
 
@@ -24,23 +24,34 @@ class CoinControl extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Coin Control',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: StreamBuilder<User?>(
-        stream: _authService.user,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          } else {
-            if (snapshot.data != null) {
-              return HomeScreen();
-            } else {
-              return LoginScreen();
-            }
-          }
-        },
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => StreamBuilder<User?>(
+              stream: _authService.user,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else {
+                  if (snapshot.data != null) {
+                    return const HomeScreen();
+                  } else {
+                    return const LoginScreen();
+                  }
+                }
+              },
+            ),
+        '/login': (context) => LoginScreen(),
+        '/home': (context) => HomeScreen(),
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => Scaffold(
+            body: Center(
+              child: Text('Page not found'),
+            ),
+          ),
+        );
+      },
     );
   }
 }

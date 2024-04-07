@@ -8,18 +8,18 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final AuthService _authService = AuthService(); // Instantiate your authentication service
+  final AuthService _authService = AuthService();
 
   // Define controllers for input fields
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController(); // Add controller for username field
+  final TextEditingController _usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: Text('Sign Up', style: TextStyle(fontSize: 30)), // Add closing parenthesis here
       ),
       body: Center(
         child: Padding(
@@ -27,6 +27,13 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                ),
+              ),
+              SizedBox(height: 20),
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -41,51 +48,43 @@ class _SignupScreenState extends State<SignupScreen> {
                   labelText: 'Password',
                 ),
               ),
-              SizedBox(height: 20),
-              TextField(
-                controller: _usernameController, // Connect the controller to the username field
-                decoration: InputDecoration(
-                  labelText: 'Username', // Label for the username field
+              SizedBox(height: 40),
+              Container(
+                width: 500,
+                height: 60,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    String username = _usernameController.text.trim();
+                    String email = _emailController.text.trim();
+                    String password = _passwordController.text.trim();
+
+                    dynamic result = await _authService.signUp(email, password, username);
+
+                    if (result != null) {
+                      Navigator.pushReplacementNamed(context, '/home');
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error during sign up')),
+                      );
+                    }
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                  ),
+                  child: Text('Sign Up', style: TextStyle(fontSize: 24, color: Colors.white)),
                 ),
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  // Logic for signing up
-                  String email = _emailController.text.trim();
-                  String password = _passwordController.text.trim();
-                  String username = _usernameController.text.trim(); // Get the username value
-
-                  // Call the signUp method from the authentication service with email, password, and username
-                  dynamic result = await _authService.signUp(email, password, username);
-
-                  // Check the result and handle it accordingly
-                  if (result != null) {
-                    // User signed up successfully
-                    // You can redirect the user to another page, for example, the home page
-                    Navigator.pushReplacementNamed(context, '/home');
-                  } else {
-                    // An error occurred during sign up
-                    // You can display an error message to the user
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error during sign up')),
-                    );
-                  }
-                },
-                child: Text('Sign Up'),
-              ),
-              SizedBox(height: 20),
-              // Add a link to the login screen
+              SizedBox(height: 60),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 },
                 child: Text(
                   'Already registered? Sign in here',
-                  style: TextStyle(color: Colors.blue),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ],
@@ -97,10 +96,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
-    // Dispose of controllers to avoid memory leaks
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _usernameController.dispose(); // Dispose of the username controller
     super.dispose();
   }
 }
