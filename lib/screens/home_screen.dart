@@ -1,8 +1,9 @@
+import 'package:coin_control/screens/add_account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,9 @@ class HomeScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 24),
               ),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const AddAccountScreen();
+                }));
               },
             ),
             ListTile(

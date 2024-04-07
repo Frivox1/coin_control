@@ -15,7 +15,7 @@ void main() async {
 }
 
 class CoinControl extends StatelessWidget {
-  CoinControl({Key? key});
+  CoinControl({super.key});
 
   final AuthService _authService = AuthService();
 
@@ -24,6 +24,43 @@ class CoinControl extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Coin Control',
+      theme: ThemeData(
+        brightness: Brightness.light, // Thème clair
+        hintColor: Colors.black, // Couleur d'accentuation
+        scaffoldBackgroundColor: Colors.white, // Fond de l'écran
+        textTheme: const TextTheme(
+          bodyLarge:
+              TextStyle(color: Colors.black), // Couleur du texte principal
+          bodyMedium:
+              TextStyle(color: Colors.black), // Couleur du texte secondaire
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle:
+              TextStyle(color: Colors.black), // Couleur du texte du label
+          hintStyle:
+              TextStyle(color: Colors.black), // Couleur du texte d'indication
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: Colors
+                    .black), // Couleur de la bordure lorsqu'elle est en focus
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                color: Colors
+                    .black), // Couleur de la bordure lorsqu'elle est activée
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor:
+                Colors.black, // Couleur du texte des boutons surélevés
+          ),
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white, // Couleur de la barre d'applications
+        ),
+      ),
       initialRoute: '/',
       routes: {
         '/': (context) => StreamBuilder<User?>(
@@ -40,12 +77,12 @@ class CoinControl extends StatelessWidget {
                 }
               },
             ),
-        '/login': (context) => LoginScreen(),
-        '/home': (context) => HomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(
-          builder: (context) => Scaffold(
+          builder: (context) => const Scaffold(
             body: Center(
               child: Text('Page not found'),
             ),
