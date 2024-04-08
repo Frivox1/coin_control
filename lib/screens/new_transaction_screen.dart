@@ -72,46 +72,53 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
             const SizedBox(height: 30.0),
             Visibility(
               visible: true,
-              child: TextFormField(
-                onChanged: (value) {
-                  setState(() {
-                    _transactionAmount = double.parse(value);
-                  });
-                },
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Enter the amount',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            const SizedBox(height: 30.0),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
+                  TextFormField(
+                    onChanged: (value) {
                       setState(() {
-                        _isPositive = true;
+                        _transactionAmount = double.parse(value);
                       });
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _isPositive ? Colors.green : Colors.grey,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Enter the amount',
+                      border: OutlineInputBorder(),
                     ),
-                    child: const Text('+'),
                   ),
-                  const SizedBox(width: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _isPositive = false;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _isPositive ? Colors.grey : Colors.red,
+                  const SizedBox(height: 20.0),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _isPositive = true;
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                _isPositive ? Colors.green : Colors.grey,
+                          ),
+                          child: const Text('+'),
+                        ),
+                        const SizedBox(width: 30),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _isPositive = false;
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                _isPositive ? Colors.grey : Colors.red,
+                          ),
+                          child: const Text('-'),
+                        ),
+                      ],
                     ),
-                    child: const Text('-'),
                   ),
                 ],
               ),

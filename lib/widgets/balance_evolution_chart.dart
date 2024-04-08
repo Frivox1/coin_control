@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class BalanceEvolutionChart extends StatelessWidget {
-  const BalanceEvolutionChart({super.key});
+  const BalanceEvolutionChart({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +41,13 @@ class BalanceEvolutionChart extends StatelessWidget {
               [
                 charts.Series<BalanceData, DateTime>(
                   id: 'Balance',
-                  colorFn: (_, __) => charts.ColorUtil.fromDartColor(
-                      Colors.black), // Changer la couleur de la ligne en noir
-                  domainFn: (BalanceData balance, _) => balance.date,
-                  measureFn: (BalanceData balance, _) => balance.balance,
+                  colorFn: (balance, _) => _getColor(balance, data),
+                  domainFn: (balance, _) => balance.date,
+                  measureFn: (balance, _) => balance.balance,
                   data: data,
-                  labelAccessorFn: (BalanceData balance, _) =>
+                  labelAccessorFn: (balance, _) =>
                       DateFormat('dd/MM/yyyy').format(balance.date),
+                  fillColorFn: (balance, _) => _getPointColor(balance, data),
                 ),
               ],
               defaultRenderer: charts.LineRendererConfig(includePoints: true),
@@ -66,6 +66,36 @@ class BalanceEvolutionChart extends StatelessWidget {
         }
       },
     );
+  }
+
+  charts.Color _getColor(BalanceData balance, List<BalanceData> data) {
+    final index = data.indexOf(balance);
+    if (index == data.length - 1) {
+      return charts.ColorUtil.fromDartColor(Colors.black);
+    }
+
+    double nextBalance = data[index + 1].balance;
+    double currentBalance = balance.balance;
+
+    if (currentBalance > nextBalance) {
+      return charts.ColorUtil.fromDartColor(Colors.red);
+    } else if (currentBalance < nextBalance) {
+      return charts.ColorUtil.fromDartColor(Colors.green);
+    } else {
+      return charts.ColorUtil.fromDartColor(Colors.black);
+    }
+  }
+
+  charts.Color _getPointColor(BalanceData balance, List<BalanceData> data) {
+    final lineColor = _getColor(balance, data);
+
+    if (lineColor == charts.ColorUtil.fromDartColor(Colors.red)) {
+      return charts.ColorUtil.fromDartColor(Colors.green);
+    } else if (lineColor == charts.ColorUtil.fromDartColor(Colors.green)) {
+      return charts.ColorUtil.fromDartColor(Colors.red);
+    } else {
+      return charts.ColorUtil.fromDartColor(Colors.black);
+    }
   }
 }
 

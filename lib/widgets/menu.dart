@@ -16,15 +16,14 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.black,
-            ),
+            decoration: BoxDecoration(color: Colors.lightGreen),
             child: Center(
               child: Text(
                 'Coin Control Menu',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 30,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

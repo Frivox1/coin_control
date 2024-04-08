@@ -85,9 +85,6 @@ class CoinControl extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Coin Control',
-      theme: ThemeData(
-          // Theme data
-          ),
       initialRoute: '/',
       routes: {
         '/': (context) => StreamBuilder<User?>(

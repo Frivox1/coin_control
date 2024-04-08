@@ -47,8 +47,9 @@ class HomeScreen extends StatelessWidget {
                 } else {
                   if (snapshot.hasData) {
                     String username = snapshot.data!.displayName ?? 'Unknown';
+                    String greeting = _getGreeting();
                     return Text(
-                      'Hi, $username',
+                      '$greeting, $username',
                       style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -107,7 +108,7 @@ class HomeScreen extends StatelessWidget {
               child: const Text('Update Balance History'),
             ),
             const SizedBox(height: 20),
-            const BalanceEvolutionChart(),
+            BalanceEvolutionChart(),
           ],
         ),
       ),
@@ -127,6 +128,17 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
+  }
+
+  String _getGreeting() {
+    DateTime now = DateTime.now();
+    if (now.hour < 12) {
+      return 'Good Morning';
+    } else if (now.hour < 18) {
+      return 'Good Afternoon';
+    } else {
+      return 'Good Evening';
+    }
   }
 
   Future<void> _updateBalanceHistory(BuildContext context) async {
