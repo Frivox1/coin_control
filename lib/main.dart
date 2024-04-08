@@ -1,16 +1,77 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:workmanager/workmanager.dart';
 import 'firebase_options.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'services/auth_service.dart';
+import 'package:timezone/data/latest.dart' as tzdata;
+import 'package:timezone/timezone.dart' as tz;
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    try {
+      AuthService authService = AuthService();
+      String userId = authService.getCurrentUserId() ?? '';
+
+      QuerySnapshot accountSnapshot = await FirebaseFirestore.instance
+          .collection('accounts')
+          .where('user_id', isEqualTo: userId)
+          .get();
+
+      double totalBalance = 0.0;
+      for (var doc in accountSnapshot.docs) {
+        totalBalance += (doc['account_balance'] ?? 0.0) as double;
+      }
+
+      await FirebaseFirestore.instance.collection('balance_history').add({
+        'user_id': userId,
+        'total_balance': totalBalance,
+        'timestamp': Timestamp.now(),
+      });
+
+      return Future.value(true);
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error executing background task: $e');
+      return Future.value(false);
+    }
+  });
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Initialize WorkManager
+  Workmanager workmanager = Workmanager();
+  workmanager.initialize(callbackDispatcher, isInDebugMode: false);
+
+  // Initialize timezone data
+  tzdata.initializeTimeZones();
+
+  // Get the local timezone name
+  String timeZoneName = tz.local.name;
+
+  // Get the current time in the local timezone
+  tz.TZDateTime now = tz.TZDateTime.now(tz.getLocation(timeZoneName));
+
+  // Calculate the next Sunday at midnight
+  tz.TZDateTime nextSunday = tz.TZDateTime(
+      tz.local, now.year, now.month, now.day + (7 - now.weekday), 0, 0);
+
+  // Register a one-off task to trigger every Sunday at 00:00 local time
+  workmanager.registerOneOffTask(
+    "1",
+    "updateData",
+    initialDelay:
+        Duration(milliseconds: nextSunday.difference(now).inMilliseconds),
+  );
+
   runApp(CoinControl());
 }
 
@@ -25,42 +86,8 @@ class CoinControl extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Coin Control',
       theme: ThemeData(
-        brightness: Brightness.light, // Thème clair
-        hintColor: Colors.black, // Couleur d'accentuation
-        scaffoldBackgroundColor: Colors.white, // Fond de l'écran (blanc)
-        textTheme: const TextTheme(
-          bodyLarge:
-              TextStyle(color: Colors.black), // Couleur du texte principal
-          bodyMedium:
-              TextStyle(color: Colors.black), // Couleur du texte secondaire
-        ),
-        inputDecorationTheme: const InputDecorationTheme(
-          labelStyle:
-              TextStyle(color: Colors.black), // Couleur du texte du label
-          hintStyle:
-              TextStyle(color: Colors.black), // Couleur du texte d'indication
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Colors
-                    .black), // Couleur de la bordure lorsqu'elle est en focus
+          // Theme data
           ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Colors
-                    .black), // Couleur de la bordure lorsqu'elle est activée
-          ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor:
-                Colors.black, // Couleur du texte des boutons surélevés
-          ),
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white, // Couleur de la barre d'applications
-        ),
-      ),
       initialRoute: '/',
       routes: {
         '/': (context) => StreamBuilder<User?>(

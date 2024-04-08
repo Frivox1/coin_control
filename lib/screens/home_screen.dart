@@ -1,10 +1,9 @@
-import 'package:coin_control/screens/new_transaction_screen.dart';
-import 'package:coin_control/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coin_control/widgets/menu.dart';
 import 'package:coin_control/services/auth_service.dart';
-import 'package:coin_control/widgets/balance_evolution_chart.dart';
+import 'package:coin_control/screens/new_transaction_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -99,15 +98,13 @@ class HomeScreen extends StatelessWidget {
                 }
               },
             ),
-            const SizedBox(
-                height: 20), // Ajoutez un espacement avant le graphique
-            const Text(
-              'Balance Evolution:',
-              style: TextStyle(fontSize: 22),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _updateBalanceHistory(context);
+              },
+              child: const Text('Update Balance History'),
             ),
-            const SizedBox(height: 10),
-            // Ajoutez l'appel du widget BalanceEvolutionChart ici
-            BalanceEvolutionChart(),
           ],
         ),
       ),
@@ -127,5 +124,41 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
+  }
+
+  Future<void> _updateBalanceHistory(BuildContext context) async {
+    try {
+      AuthService authService = AuthService();
+      String userId = authService.getCurrentUserId() ?? '';
+
+      QuerySnapshot accountSnapshot = await FirebaseFirestore.instance
+          .collection('accounts')
+          .where('user_id', isEqualTo: userId)
+          .get();
+
+      double totalBalance = 0.0;
+      for (var doc in accountSnapshot.docs) {
+        totalBalance += (doc['account_balance'] ?? 0.0) as double;
+      }
+
+      await FirebaseFirestore.instance.collection('balance_history').add({
+        'user_id': userId,
+        'total_balance': totalBalance,
+        'timestamp': Timestamp.now(),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Balance history updated successfully'),
+        ),
+      );
+    } catch (e) {
+      print('Error updating balance history: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to update balance history'),
+        ),
+      );
+    }
   }
 }
