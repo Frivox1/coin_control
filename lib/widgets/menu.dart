@@ -1,3 +1,4 @@
+import 'package:coin_control/screens/new_transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:coin_control/screens/list_accounts_screen.dart';
 import 'package:coin_control/screens/add_account_screen.dart';
@@ -52,6 +53,25 @@ class AppDrawer extends StatelessWidget {
               }));
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.add, size: 24),
+            title: const Text(
+              'New transaction',
+              style: TextStyle(fontSize: 24),
+            ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const NewTransactionScreen();
+              }));
+            },
+          ),
+          ListTile(
+              leading: const Icon(Icons.bar_chart, size: 24),
+              title: const Text(
+                'Graphic view',
+                style: TextStyle(fontSize: 24),
+              ),
+              onTap: () {}),
           ListTile(
             leading: const Icon(Icons.settings, size: 24),
             title: const Text(

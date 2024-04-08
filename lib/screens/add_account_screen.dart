@@ -7,6 +7,7 @@ class AddAccountScreen extends StatefulWidget {
   const AddAccountScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AddAccountScreenState createState() => _AddAccountScreenState();
 }
 
@@ -61,7 +62,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                   });
                 },
               ),
-              const SizedBox(height: 60), // Increased space
+              const SizedBox(height: 60),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Account Balance',
@@ -99,7 +100,7 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                 },
               ),
 
-              const SizedBox(height: 60), // Increased space
+              const SizedBox(height: 60),
               DropdownButtonFormField<String>(
                 value: _selectedAccountType,
                 items: _accountTypes.map((type) {
@@ -171,8 +172,6 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
         'user_id': userId,
         'timestamp': FieldValue.serverTimestamp(),
       }).then((_) {
-        print('Account created successfully!');
-        print('userId: $userId');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Account added successfully!'),

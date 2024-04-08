@@ -1,3 +1,4 @@
+import 'package:coin_control/screens/new_transaction_screen.dart';
 import 'package:coin_control/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -112,7 +113,9 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Add your onPressed functionality here
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return const NewTransactionScreen();
+          }));
         },
         label: const Text(
           '+ Add a transaction',

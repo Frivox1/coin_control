@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class BalanceEvolutionChart extends StatefulWidget {
   BalanceEvolutionChart({super.key});
-  final Color leftBarColor = Colors.yellow;
+  final Color leftBarColor = Colors.green;
   final Color rightBarColor = Colors.red;
-  final Color avgColor = Colors.orange;
+  final Color avgColor = Colors.red;
   @override
   State<StatefulWidget> createState() => BarChartSample2State();
 }
