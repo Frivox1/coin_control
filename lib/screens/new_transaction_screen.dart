@@ -3,19 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coin_control/services/auth_service.dart';
 
 class NewTransactionScreen extends StatefulWidget {
-  const NewTransactionScreen({super.key});
+  const NewTransactionScreen({Key? key});
 
   @override
   _NewTransactionScreenState createState() => _NewTransactionScreenState();
 }
 
 class _NewTransactionScreenState extends State<NewTransactionScreen> {
-  String? _selectedAccountId;
-  // ignore: unused_field
+  String? _selectedAccountName;
   double _transactionAmount = 0.0;
   final AuthService _authService = AuthService();
-  bool _isPositive =
-      true; // Added to track if transaction amount is positive or negative
+  bool _isPositive = true;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +37,6 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                   return Text('Error: ${snapshot.error}');
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return const Center(
-                    // Center the message
                     child: Text(
                       'No accounts found',
                       style:
@@ -48,20 +45,19 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                   );
                 } else {
                   return Visibility(
-                    visible:
-                        true, // Show the dropdown only if there are accounts
+                    visible: true,
                     child: DropdownButtonFormField<String>(
-                      value: _selectedAccountId,
+                      value: _selectedAccountName,
                       onChanged: (String? newValue) {
                         setState(() {
-                          _selectedAccountId = newValue;
+                          _selectedAccountName = newValue;
                         });
                       },
                       items: snapshot.data!
-                          .map<DropdownMenuItem<String>>((String accountId) {
+                          .map<DropdownMenuItem<String>>((String accountName) {
                         return DropdownMenuItem<String>(
-                          value: accountId,
-                          child: Text(accountId),
+                          value: accountName,
+                          child: Text(accountName),
                         );
                       }).toList(),
                       decoration: const InputDecoration(
@@ -75,8 +71,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
             ),
             const SizedBox(height: 30.0),
             Visibility(
-              visible:
-                  true, // Show the TextFormField only if there are accounts
+              visible: true,
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
@@ -92,62 +87,82 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
             ),
             const SizedBox(height: 30.0),
             Center(
-              // Center the row
               child: Row(
-                // Added Row to hold the buttons
-                mainAxisAlignment:
-                    MainAxisAlignment.center, // Center the buttons horizontally
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    // Button for positive amount
                     onPressed: () {
                       setState(() {
                         _isPositive = true;
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _isPositive
-                          ? Colors.green
-                          : Colors.grey, // Change color based on selection
+                      backgroundColor: _isPositive ? Colors.green : Colors.grey,
                     ),
                     child: const Text('+'),
                   ),
-                  const SizedBox(width: 30), // Added space between buttons
+                  const SizedBox(width: 30),
                   ElevatedButton(
-                    // Button for negative amount
                     onPressed: () {
                       setState(() {
                         _isPositive = false;
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _isPositive
-                          ? Colors.grey
-                          : Colors.red, // Change color based on selection
+                      backgroundColor: _isPositive ? Colors.grey : Colors.red,
                     ),
                     child: const Text('-'),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20.0), // Added space for better alignment
+            const SizedBox(height: 20.0),
             SizedBox(
-              // Added SizedBox to make the button as wide as the form
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  if (_selectedAccountName != null) {
+                    await _updateAccountBalance();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Transaction completed successfully!'),
+                        duration: Duration(seconds: 3),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    Navigator.pop(context);
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Error'),
+                          content: const Text('Please select an account.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.black,
                   textStyle: const TextStyle(
                     fontSize: 24,
-                  ), // Button color
+                  ),
                   padding: const EdgeInsets.symmetric(
                     vertical: 15,
                     horizontal: 30,
-                  ), // Padding
+                  ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 child: const Text('Confirm Transaction'),
@@ -162,7 +177,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
   Future<List<String>> _getAccounts() async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('accounts')
-        .where('user_id', isEqualTo: _authService.getCurrentUserId() as String)
+        .where('user_id', isEqualTo: _authService.getCurrentUserId())
         .get();
     List<String> accountNames = [];
     for (var doc in querySnapshot.docs) {
@@ -170,5 +185,23 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
       accountNames.add(data['account_name']);
     }
     return accountNames;
+  }
+
+  Future<void> _updateAccountBalance() async {
+    String? userId = _authService.getCurrentUserId();
+    if (userId != null) {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('accounts')
+          .where('account_name', isEqualTo: _selectedAccountName)
+          .get();
+      DocumentSnapshot accountSnapshot = querySnapshot.docs.first;
+      DocumentReference accountRef = accountSnapshot.reference;
+
+      await accountRef.update({
+        'account_balance': _isPositive
+            ? FieldValue.increment(_transactionAmount)
+            : FieldValue.increment(-_transactionAmount)
+      });
+    }
   }
 }
