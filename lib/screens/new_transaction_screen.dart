@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coin_control/services/auth_service.dart';
 
 class NewTransactionScreen extends StatefulWidget {
-  const NewTransactionScreen({Key? key}) : super(key: key);
+  const NewTransactionScreen({super.key});
 
   @override
   _NewTransactionScreenState createState() => _NewTransactionScreenState();
@@ -21,24 +21,24 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Transaction', style: TextStyle(fontSize: 30)),
+        title: const Text('New Transaction', style: TextStyle(fontSize: 30)),
       ),
       body: Padding(
-        padding: EdgeInsets.all(35.0),
+        padding: const EdgeInsets.all(35.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 60.0),
+            const SizedBox(height: 60.0),
             FutureBuilder<List<String>>(
               future: _getAccounts(),
               builder:
                   (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(
+                  return const Center(
                     // Center the message
                     child: Text(
                       'No accounts found',
@@ -64,7 +64,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                           child: Text(accountId),
                         );
                       }).toList(),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Select an account',
                         border: OutlineInputBorder(),
                       ),
@@ -73,7 +73,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                 }
               },
             ),
-            SizedBox(height: 30.0),
+            const SizedBox(height: 30.0),
             Visibility(
               visible:
                   true, // Show the TextFormField only if there are accounts
@@ -90,7 +90,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 30.0),
+            const SizedBox(height: 30.0),
             Center(
               // Center the row
               child: Row(
@@ -110,9 +110,9 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                           ? Colors.green
                           : Colors.grey, // Change color based on selection
                     ),
-                    child: Text('+'),
+                    child: const Text('+'),
                   ),
-                  SizedBox(width: 30), // Added space between buttons
+                  const SizedBox(width: 30), // Added space between buttons
                   ElevatedButton(
                     // Button for negative amount
                     onPressed: () {
@@ -125,12 +125,12 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                           ? Colors.grey
                           : Colors.red, // Change color based on selection
                     ),
-                    child: Text('-'),
+                    child: const Text('-'),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 20.0), // Added space for better alignment
+            const SizedBox(height: 20.0), // Added space for better alignment
             SizedBox(
               // Added SizedBox to make the button as wide as the form
               width: double.infinity,
@@ -165,10 +165,10 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
         .where('user_id', isEqualTo: _authService.getCurrentUserId() as String)
         .get();
     List<String> accountNames = [];
-    querySnapshot.docs.forEach((doc) {
+    for (var doc in querySnapshot.docs) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       accountNames.add(data['account_name']);
-    });
+    }
     return accountNames;
   }
 }

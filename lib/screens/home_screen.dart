@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coin_control/widgets/menu.dart';
 import 'package:coin_control/services/auth_service.dart';
 import 'package:coin_control/screens/new_transaction_screen.dart';
+import 'package:coin_control/widgets/balance_evolution_chart.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -105,6 +106,8 @@ class HomeScreen extends StatelessWidget {
               },
               child: const Text('Update Balance History'),
             ),
+            const SizedBox(height: 20),
+            const BalanceEvolutionChart(),
           ],
         ),
       ),
