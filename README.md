@@ -25,7 +25,7 @@ To clone the project, follow these steps:
 4. Run the following command:
 
 ```bash 
-git clone https://github.com/Frivox1/coin_control.git
+git clone https://github.com/your_username/coin_control.git
 ```
 
 5. Once the project is cloned, navigate to the project directory:
