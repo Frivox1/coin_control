@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coin_control/services/auth_service.dart';
 
 class NewTransactionScreen extends StatefulWidget {
-  const NewTransactionScreen({Key? key});
+  const NewTransactionScreen({super.key});
 
   @override
   _NewTransactionScreenState createState() => _NewTransactionScreenState();
@@ -69,7 +69,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                 }
               },
             ),
-            const SizedBox(height: 30.0),
+            const SizedBox(height: 60.0),
             Visibility(
               visible: true,
               child: Column(
@@ -87,35 +87,39 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 60.0),
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              _isPositive = true;
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                _isPositive ? Colors.green : Colors.grey,
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _isPositive = true;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  _isPositive ? Colors.green : Colors.grey,
+                            ),
+                            child: const Text('+'),
                           ),
-                          child: const Text('+'),
                         ),
-                        const SizedBox(width: 30),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              _isPositive = false;
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                _isPositive ? Colors.grey : Colors.red,
+                        const SizedBox(width: 60),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _isPositive = false;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  _isPositive ? Colors.grey : Colors.red,
+                            ),
+                            child: const Text('-'),
                           ),
-                          child: const Text('-'),
                         ),
                       ],
                     ),
@@ -123,7 +127,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 60.0),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(

@@ -108,7 +108,7 @@ class HomeScreen extends StatelessWidget {
               child: const Text('Update Balance History'),
             ),
             const SizedBox(height: 20),
-            BalanceEvolutionChart(),
+            const BalanceEvolutionChart(),
           ],
         ),
       ),

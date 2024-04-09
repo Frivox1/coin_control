@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class BalanceEvolutionChart extends StatelessWidget {
-  const BalanceEvolutionChart({Key? key});
+  const BalanceEvolutionChart({super.key});
 
   @override
   Widget build(BuildContext context) {

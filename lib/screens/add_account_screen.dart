@@ -54,6 +54,9 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the account name';
                   }
+                  if (value.length > 12) {
+                    return 'Account name cannot exceed 12 characters';
+                  }
                   return null;
                 },
                 onChanged: (value) {
@@ -76,26 +79,18 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the account balance';
                   }
-                  // Vérifie si la valeur contient une virgule
-                  if (value.contains(',')) {
-                    return 'Please use "." instead of ","';
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter a valid number';
                   }
-
-                  if (value.contains('-')) {
-                    return 'Please enter a positive value';
+                  double balance = double.parse(value);
+                  if (balance > 999999) {
+                    return 'Account balance cannot exceed 999,999';
                   }
-
-                  if (value.contains('€') ||
-                      value.contains('\$') ||
-                      value.contains('£')) {
-                    return 'Please don\'t use currency symbols';
-                  }
-
                   return null;
                 },
                 onChanged: (value) {
                   setState(() {
-                    _accountBalance = double.parse(value);
+                    _accountBalance = double.tryParse(value) ?? 0.0;
                   });
                 },
               ),

@@ -1,3 +1,4 @@
+import 'package:coin_control/screens/analytics_screen.dart';
 import 'package:coin_control/screens/new_transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:coin_control/screens/list_accounts_screen.dart';
@@ -16,7 +17,7 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           const DrawerHeader(
-            decoration: BoxDecoration(color: Colors.lightGreen),
+            decoration: BoxDecoration(color: Colors.green),
             child: Center(
               child: Text(
                 'Coin Control Menu',
@@ -67,10 +68,14 @@ class AppDrawer extends StatelessWidget {
           ListTile(
               leading: const Icon(Icons.bar_chart, size: 24),
               title: const Text(
-                'Graphic view',
+                'Analytics',
                 style: TextStyle(fontSize: 24),
               ),
-              onTap: () {}),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const AnalyticsScreen();
+                }));
+              }),
           ListTile(
             leading: const Icon(Icons.settings, size: 24),
             title: const Text(
