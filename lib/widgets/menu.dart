@@ -77,16 +77,6 @@ class AppDrawer extends StatelessWidget {
                 }));
               }),
           ListTile(
-            leading: const Icon(Icons.settings, size: 24),
-            title: const Text(
-              'Settings',
-              style: TextStyle(fontSize: 24),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.logout, size: 24),
             title: const Text(
               'Sign out',

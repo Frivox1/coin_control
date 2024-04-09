@@ -4,7 +4,7 @@ Welcome to my Financial Management App "Coin Control"!
 
 ## Introduction
 
-Coin Control is a centralised platform designed to help you manage all your accounts. The application allows you to keep track of your finances effortlessly, using graphical representations for greater financial control and insight. The application is currently only available in English, but other languages are planned for the future.
+Coin Control is a centralised platform designed to help you manage all your accounts. The application allows you to keep track of your finances effortlessly, using graphical representations for greater financial control and insight.
 
 ## Features
 
