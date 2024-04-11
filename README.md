@@ -1,4 +1,4 @@
-# Coin Control
+# Coin Control 💸 👀
 
 Welcome to my Financial Management App "Coin Control"!
 
