@@ -16,6 +16,17 @@ void callbackDispatcher() {
       AuthService authService = AuthService();
       String userId = authService.getCurrentUserId() ?? '';
 
+      // Supprimer la collection "transactions"
+      await FirebaseFirestore.instance
+          .collection('transactions')
+          .get()
+          .then((snapshot) {
+        for (DocumentSnapshot doc in snapshot.docs) {
+          doc.reference.delete();
+        }
+      });
+
+      // Mettre à jour l'historique des soldes
       QuerySnapshot accountSnapshot = await FirebaseFirestore.instance
           .collection('accounts')
           .where('user_id', isEqualTo: userId)
@@ -34,7 +45,7 @@ void callbackDispatcher() {
 
       return Future.value(true);
     } catch (e) {
-      // ignore: avoid_print
+      // Gérer les erreurs
       print('Error executing background task: $e');
       return Future.value(false);
     }

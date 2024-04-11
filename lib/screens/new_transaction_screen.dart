@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coin_control/services/auth_service.dart';
 
 class NewTransactionScreen extends StatefulWidget {
-  const NewTransactionScreen({super.key});
+  const NewTransactionScreen({Key? key}) : super(key: key);
 
   @override
   _NewTransactionScreenState createState() => _NewTransactionScreenState();
@@ -134,6 +134,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
                 onPressed: () async {
                   if (_selectedAccountName != null) {
                     await _updateAccountBalance();
+                    await _addTransactionToFirestore(); // Ajout de la transaction à Firestore
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Transaction completed successfully!'),
@@ -213,6 +214,24 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
             ? FieldValue.increment(_transactionAmount)
             : FieldValue.increment(-_transactionAmount)
       });
+    }
+  }
+
+  Future<void> _addTransactionToFirestore() async {
+    String? userId = _authService.getCurrentUserId();
+    if (userId != null) {
+      CollectionReference transactionsRef =
+          FirebaseFirestore.instance.collection('transactions');
+
+      Map<String, dynamic> transactionData = {
+        'user_id': userId,
+        'account_name': _selectedAccountName,
+        'transaction_amount': _transactionAmount,
+        'is_positive': _isPositive,
+        'timestamp': FieldValue.serverTimestamp(),
+      };
+
+      await transactionsRef.add(transactionData);
     }
   }
 }

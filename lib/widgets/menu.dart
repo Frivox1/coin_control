@@ -1,4 +1,5 @@
 import 'package:coin_control/screens/analytics_screen.dart';
+import 'package:coin_control/screens/list_transactions.dart';
 import 'package:coin_control/screens/new_transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:coin_control/screens/list_accounts_screen.dart';
@@ -62,6 +63,18 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const NewTransactionScreen();
+              }));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.list, size: 24),
+            title: const Text(
+              'List of transactions',
+              style: TextStyle(fontSize: 24),
+            ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const ListTransactionsScreen();
               }));
             },
           ),
