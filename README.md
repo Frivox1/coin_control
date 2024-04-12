@@ -2,18 +2,18 @@
 
 Welcome to my Financial Management App "Coin Control"!
 
-## Introduction
+## Introduction 👋
 
 Coin Control is a centralized platform designed to help you manage all your accounts. The application allows you to effortlessly keep track of your finances, utilizing graphical representations for enhanced financial control and insight. As of now, it now supports viewing transaction history, providing you with a comprehensive overview of your past transactions. Additionally, your transaction history is reset every Sunday, ensuring a fresh start each week.
 
-## Features
+## Features 📝
 
 - **Account Aggregation**: Easily connect and manage multiple accounts from various financial institutions and various account types.
 - **Insights and Reports**: Gain valuable insights into your financial health with comprehensive analytics and graphical representations.
 - **Balance and Transactions history**: Delve into your account balances and explore your transaction history effortlessly.
 - **Security**: Your data is stored securely in the cloud, ensuring your privacy and security.
 
-## Screenshots
+## Screenshots 📷
 
 <img src="https://github.com/Frivox1/coin_control/assets/73830772/5fbb841d-d431-453c-ac82-a263d069fa47" alt="Home" width="200">
 
@@ -30,7 +30,7 @@ Coin Control is a centralized platform designed to help you manage all your acco
 <img src="https://github.com/Frivox1/coin_control/assets/73830772/79fb8171-dc3c-4963-9378-82a1c15fbd92" alt="Analytics" width="200">
 
 
-## Cloning the Project
+## Cloning the Project 🔍
 
 To clone the project, follow these steps:
 
@@ -66,7 +66,7 @@ flutter pub get
 flutter run
 ```
 
-## Tech Stack
+## Tech Stack 🧑‍💻
 
 - **Flutter**: Google's UI toolkit for building cross-platform applications.
 
@@ -75,7 +75,7 @@ flutter run
 - **Firebase**: Google's platform for backend services.
 
 
-## Contact
+## Contact 📲
 
 If you have any questions or feedback, feel free to reach me at [mertens.valery@gmail.com](mailto:mertens.valery@gmail.com).
 
