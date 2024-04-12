@@ -15,19 +15,19 @@ Coin Control is a centralized platform designed to help you manage all your acco
 
 ## Screenshots
 
-<img src="https://github.com/Frivox1/coin_control/assets/73830772/5fbb841d-d431-453c-ac82-a263d069fa47" alt="Home" width="400" height="790">
+<img src="https://github.com/Frivox1/coin_control/assets/73830772/5fbb841d-d431-453c-ac82-a263d069fa47" alt="Home" width="200">
 
-<img src="https://github.com/Frivox1/coin_control/assets/73830772/c42bc074-e55a-4f67-ac04-22d70cf4a8df" alt="Navbar" width="400" height="790">
+<img src="https://github.com/Frivox1/coin_control/assets/73830772/c42bc074-e55a-4f67-ac04-22d70cf4a8df" alt="Navbar" width="200">
 
-<img src="https://github.com/Frivox1/coin_control/assets/73830772/e963cd66-6b7e-4ac9-8e85-ecc6615d08a3" alt="Add Account" width="400" height="790">
+<img src="https://github.com/Frivox1/coin_control/assets/73830772/e963cd66-6b7e-4ac9-8e85-ecc6615d08a3" alt="Add Account" width="200">
 
-<img src="https://github.com/Frivox1/coin_control/assets/73830772/50ea4364-4c45-455f-94d9-d5b3f0d583a5" alt="List Account" width="400" height="790">
+<img src="https://github.com/Frivox1/coin_control/assets/73830772/50ea4364-4c45-455f-94d9-d5b3f0d583a5" alt="List Account" width="200">
 
-<img src="https://github.com/Frivox1/coin_control/assets/73830772/fbb2e083-8dd1-4439-94fc-898a217b85db" alt="Add Transaction" width="400" height="790">
+<img src="https://github.com/Frivox1/coin_control/assets/73830772/fbb2e083-8dd1-4439-94fc-898a217b85db" alt="Add Transaction" width="200">
 
-<img src="https://github.com/Frivox1/coin_control/assets/73830772/eaaf2e2b-8825-4c23-a3e2-b76289ccedfd" alt="List Transaction" width="400" height="790">
+<img src="https://github.com/Frivox1/coin_control/assets/73830772/eaaf2e2b-8825-4c23-a3e2-b76289ccedfd" alt="List Transaction" width="200">
 
-<img src="https://github.com/Frivox1/coin_control/assets/73830772/79fb8171-dc3c-4963-9378-82a1c15fbd92" alt="Analytics" width="400" height="790">
+<img src="https://github.com/Frivox1/coin_control/assets/73830772/79fb8171-dc3c-4963-9378-82a1c15fbd92" alt="Analytics" width="200">
 
 
 ## Cloning the Project
