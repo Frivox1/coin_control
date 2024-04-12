@@ -15,18 +15,6 @@ Coin Control is a centralized platform designed to help you manage all your acco
 
 ## Screenshots
 
-![Home Screen](screenshots/home.png)
-
-![Navigation](screenshots/navbar.png)
-![Add Account](screenshots/add_account.png)
-![List Account](screenshots/list_account.png)
-![Add Transaction](screenshots/add_transaction.png)
-![List Transaction](screenshots/list_transaction.png)
-![Analytics](screenshots/analytics.png)
-![Login](screenshots/login.png)
-![Sign Up](screenshots/sign_up.png)
-
-
 ## Cloning the Project
 
 To clone the project, follow these steps:
